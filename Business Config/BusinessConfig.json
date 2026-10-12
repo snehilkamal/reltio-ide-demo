@@ -8121,6 +8121,122 @@
           },
           "scoreStandalone": 0,
           "scoreIncremental": 0
+        },
+        {
+          "uri": "configuration/entityTypes/Individual/matchGroups/BaseRule08",
+          "label": "BaseRule08: Fuzzy(FirstName, Phone, AddressLine1, City); Exact(LastName, Country)",
+          "type": "suspect",
+          "scope": "ALL",
+          "useOvOnly": true,
+          "rule": {
+            "cleanse": [
+              {
+                "cleanseAdapter": "com.reltio.cleanse.impl.NameDictionaryCleanser",
+                "cleanseAdapterParams": {
+                  "dictionary": "SynonymFirstNamesNA_2020-09-01",
+                  "keepOriginalValue": false
+                },
+                "mappings": [
+                  {
+                    "attribute": "configuration/entityTypes/Individual/attributes/FirstName",
+                    "cleanseAttribute": "configuration/entityTypes/Individual/attributes/FirstName"
+                  }
+                ]
+              }
+            ],
+            "matchTokenClasses": {
+              "mapping": [
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/FirstName",
+                  "class": "com.reltio.match.token.DoubleMetaphoneMatchToken"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/LastName",
+                  "class": "com.reltio.match.token.ExactMatchToken"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/Phone/attributes/Number",
+                  "class": "com.reltio.match.token.PhoneNumberMatchToken"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/Address/attributes/AddressLine1",
+                  "class": "com.reltio.match.token.CustomMatchToken",
+                  "parameters": [
+                    {
+                      "parameter": "groups",
+                      "values": [
+                        {
+                          "className": "com.reltio.match.token.AddressLineMatchToken",
+                          "noiseDictionary": "addressLine"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/Address/attributes/City",
+                  "class": "com.reltio.match.token.DoubleMetaphoneMatchToken"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/Address/attributes/Country",
+                  "class": "com.reltio.match.token.ExactMatchToken"
+                }
+              ]
+            },
+            "comparatorClasses": {
+              "mapping": [
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/FirstName",
+                  "class": "com.reltio.match.comparator.DoubleMetaphoneComparator"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/LastName",
+                  "class": "com.reltio.match.comparator.BasicStringComparator"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/Phone/attributes/Number",
+                  "class": "com.reltio.match.comparator.PhoneNumberComparator"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/Address/attributes/AddressLine1",
+                  "class": "com.reltio.match.comparator.CustomComparator",
+                  "parameters": [
+                    {
+                      "parameter": "groups",
+                      "values": [
+                        {
+                          "className": "com.reltio.match.comparator.AddressLineComparator",
+                          "noiseDictionary": "addressLine"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/Address/attributes/City",
+                  "class": "com.reltio.match.comparator.DoubleMetaphoneComparator"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/Address/attributes/Country",
+                  "class": "com.reltio.match.comparator.BasicStringComparator"
+                }
+              ]
+            },
+            "and": {
+              "fuzzy": [
+                "configuration/entityTypes/Individual/attributes/FirstName",
+                "configuration/entityTypes/Individual/attributes/Phone/attributes/Number",
+                "configuration/entityTypes/Individual/attributes/Address/attributes/AddressLine1",
+                "configuration/entityTypes/Individual/attributes/Address/attributes/City"
+              ],
+              "exact": [
+                "configuration/entityTypes/Individual/attributes/LastName",
+                "configuration/entityTypes/Individual/attributes/Address/attributes/Country"
+              ]
+            }
+          },
+          "scoreStandalone": 0,
+          "scoreIncremental": 0
         }
       ],
       "analyticsAttributes": [
