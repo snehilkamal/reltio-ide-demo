@@ -8121,6 +8121,64 @@
           },
           "scoreStandalone": 0,
           "scoreIncremental": 0
+        },
+        {
+          "uri": "configuration/entityTypes/Individual/matchGroups/FuzzyFirstNameExactLastName",
+          "label": "Fuzzy(FirstName); Exact(LastName)",
+          "type": "suspect",
+          "scope": "ALL",
+          "useOvOnly": true,
+          "rule": {
+            "cleanse": [
+              {
+                "cleanseAdapter": "com.reltio.cleanse.impl.NameDictionaryCleanser",
+                "cleanseAdapterParams": {
+                  "dictionary": "SynonymFirstNamesNA_2020-09-01",
+                  "keepOriginalValue": false
+                },
+                "mappings": [
+                  {
+                    "attribute": "configuration/entityTypes/Individual/attributes/FirstName",
+                    "cleanseAttribute": "configuration/entityTypes/Individual/attributes/FirstName"
+                  }
+                ]
+              }
+            ],
+            "matchTokenClasses": {
+              "mapping": [
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/FirstName",
+                  "class": "com.reltio.match.token.DoubleMetaphoneMatchToken"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/LastName",
+                  "class": "com.reltio.match.token.ExactMatchToken"
+                }
+              ]
+            },
+            "comparatorClasses": {
+              "mapping": [
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/FirstName",
+                  "class": "com.reltio.match.comparator.DoubleMetaphoneComparator"
+                },
+                {
+                  "attribute": "configuration/entityTypes/Individual/attributes/LastName",
+                  "class": "com.reltio.match.comparator.BasicStringComparator"
+                }
+              ]
+            },
+            "and": {
+              "fuzzy": [
+                "configuration/entityTypes/Individual/attributes/FirstName"
+              ],
+              "exact": [
+                "configuration/entityTypes/Individual/attributes/LastName"
+              ]
+            }
+          },
+          "scoreStandalone": 0,
+          "scoreIncremental": 0
         }
       ],
       "analyticsAttributes": [
